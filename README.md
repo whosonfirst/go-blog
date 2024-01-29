@@ -19,7 +19,7 @@ go build -mod vendor -ldflags="-s -w" -o bin/wof-md2idx cmd/wof-md2idx/main.go
 
 ## Putting it all together
 
-Here is some _example_ Makefile targets for a weblog where copies the binary tools produced by this package are stored in a folder called `dist`, templates for the blog are stored in `templates` and the Markdown files and resultant HTML files are stored in `www/blog`.
+Here are some _example_ Makefile targets for a weblog where copies the binary tools produced by this package are stored in a folder called `dist`, templates for the blog are stored in `templates` and the Markdown files and resultant HTML files are stored in `www/blog`. Note that these targets do not do anything to publish or sync the rendered Markdown files to a remote server or location. Those details are left to you to figure out for yourself.
 
 ```
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
