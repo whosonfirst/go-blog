@@ -1,98 +1,129 @@
-# go-whosonfirst-markdown
+# go-blog
 
-There are many Markdown tools. This one is ours.
+There are many blogging tools. This one is ours.
 
-## Install
+## Documentation
 
-You will need to have both `Go` (specifically version [Go 1.12](https://golang.org/dl/) or higher) and the `make` programs installed on your computer. Assuming you do just type:
-
-```
-make tools
-```
-
-All of this package's dependencies are bundled with the code in the `vendor` directory.
-
-## Important
-
-Everything is in flux, right now. Lots of things will change.
+Documentation is incomplete at this point.
 
 ## Tools
 
-### wof-md2html
-
 ```
-./bin/wof-md2html -h
-Usage of ./bin/wof-md2html:
-  -footer string
-    	The name of the (Go) template to use as a custom footer
-  -header string
-    	The name of the (Go) template to use as a custom header
-  -input string
-    	What you expect the input Markdown file to be called (default "index.md")
-  -mode string
-    	Valid modes are: files, directory (default "files")
-  -output string
-    	What you expect the output HTML file to be called (default "index.html")
-  -templates value
-    	One or more templates to parse in addition to -header and -footer
-  -writer value
-    	One or more writer to output rendered Markdown to. Valid writers are: fs=PATH; null; stdout
+$> make cli
+rm -rf bin/*
+go build -mod vendor -ldflags="-s -w" -o bin/wof-mdparse cmd/wof-mdparse/main.go
+go build -mod vendor -ldflags="-s -w" -o bin/wof-md2feed cmd/wof-md2feed/main.go	
+go build -mod vendor -ldflags="-s -w" -o bin/wof-md2html cmd/wof-md2html/main.go
+go build -mod vendor -ldflags="-s -w" -o bin/wof-md2idx cmd/wof-md2idx/main.go
 ```
 
-### wof-md2idx
+## Putting it all together
+
+Here is some _example_ Makefile targets for a weblog where copies the binary tools produced by this package are stored in a folder called `dist`, templates for the blog are stored in `templates` and the Markdown files and resultant HTML files are stored in `www/blog`.
 
 ```
-./bin/wof-md2idx -h
-Usage of ./bin/wof-md2idx:
-  -footer string
-    	The name of the (Go) template to use as a custom footer
-  -header string
-    	The name of the (Go) template to use as a custom header
-  -input string
-    	What you expect the input Markdown file to be called (default "index.md")
-  -output string
-    	What you expect the output HTML file to be called (default "index.html")
-  -templates value
-    	One or more templates to parse in addition to -header and -footer
-  -writer value
-    	One or more writer to output rendered Markdown to. Valid writers are: fs=PATH; null; stdout
-```
+OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
+BIN=utils/$(OS)
 
-### wof-md2feed
+# https://github.com/whosonfirst/go-whosonfirst-markdown
+MD2HTML=$(BIN)/wof-md2html
+MD2IDX=$(BIN)/wof-md2idx
+MD2FEED=$(BIN)/wof-md2feed
 
-```
-./bin/wof-md2feed -h
-Usage of ./bin/wof-md2feed:
-  -format string
-    	Valid options are: atom_10, rss_20 (default "rss_20")
-  -input string
-    	What you expect the input Markdown file to be called (default "index.md")
-  -items int
-    	The number of items to include in your feed (default 10)
-  -output string
-    	The filename of your feed. If empty default to the value of -format + ".xml"
-  -templates value
-    	One or more directories containing (Go) templates to parse
-  -writer value
-    	One or more writer to output rendered Markdown to. Valid writers are: fs=PATH; null; stdout
-```
+render-blog:
+	@make render-blog-posts
+	@make render-blog-indices
+	@make render-blog-feeds
 
-### wof-mdparse
+render-blog-posts:
+	$(MD2HTML) \
+		-template-uri cwd:///templates/common \
+		-template-uri cwd:///templates/blog/post \
+		-header blog_post_header \
+		-footer blog_post_footer \
+		-mode directory \
+		-html-bucket-uri cwd:///www/ \
+		-markdown-bucket-uri cwd:///www/ \
+		blog/
 
-```
-./bin/wof-mdparse -h
-Usage of ./bin/wof-mdparse:
-  -all
-    	Dump both frontmatter and body
-  -body
-    	Dump (Markdown) body
-  -frontmatter
-    	Dump (Jekyll) frontmatter
+render-blog-indices:
+	@make render-blog-landing
+	@make render-blog-ymd
+	@make render-blog-tags
+	@make render-blog-authors
+
+render-blog-landing:
+	$(MD2IDX) -mode landing \
+		-html-template-uri cwd:///templates/common \
+		-html-template-uri cwd:///templates/blog/index \
+		-markdown-template-uri cwd:///templates/blog/index \
+		-header blog_index_header \
+		-footer blog_index_footer \
+		-list blog_index_list \
+		-html-bucket-uri cwd:///www/ \
+		-markdown-bucket-uri cwd:///www/ \
+		blog/
+
+render-blog-ymd:
+	$(MD2IDX) -mode ymd \
+		-html-template-uri cwd:///templates/common \
+		-html-template-uri cwd:///templates/blog/index \
+		-markdown-template-uri cwd:///templates/blog/index \
+		-header blog_index_header \
+		-footer blog_index_footer \
+		-list blog_index_list \
+		-html-bucket-uri cwd:///www/ \
+		-markdown-bucket-uri cwd:///www/ \
+		blog/
+
+render-blog-tags:
+	$(MD2IDX) -mode tags \
+		-html-template-uri cwd:///templates/common \
+		-html-template-uri cwd:///templates/blog/index \
+		-markdown-template-uri cwd:///templates/blog/index \
+		-header blog_index_header \
+		-footer blog_index_footer \
+		-list blog_index_list \
+		-rollup blog_index_rollup \
+		-html-bucket-uri cwd:///www/ \
+		-markdown-bucket-uri cwd:///www/ \
+		blog/
+
+render-blog-authors:
+	$(MD2IDX) -mode authors \
+		-html-template-uri cwd:///templates/common \
+		-html-template-uri cwd:///templates/blog/index \
+		-markdown-template-uri cwd:///templates/blog/index \
+		-header blog_index_header \
+		-footer blog_index_footer \
+		-list blog_index_list \
+		-rollup blog_index_rollup \
+		-html-bucket-uri cwd:///www/ \
+		-markdown-bucket-uri cwd:///www/ \
+		blog/
+
+render-blog-feeds:
+	@make render-blog-feeds-rss
+	@make render-blog-feeds-atom
+
+render-blog-feeds-rss:
+	$(MD2FEED) \
+		-template-uri cwd:///templates/blog/feed \
+		-format rss_20 \
+		-feeds-bucket-uri cwd:///www/ \
+		-markdown-bucket-uri cwd:///www/ \
+		blog/
+
+render-blog-feeds-atom:
+	$(MD2FEED) \
+		-template-uri cwd:///templates/blog/feed \
+		-format atom_10 \
+		-feeds-bucket-uri cwd:///www/ \
+		-markdown-bucket-uri cwd:///www/ \
+		blog/
 ```
 
 ## See also
 
-* github.com/microcosm-cc/bluemonday
-* gopkg.in/russross/blackfriday.v2
-* https://github.com/whosonfirst/go-whosonfirst-markdown-sqlite
-* https://github.com/whosonfirst/go-whosonfirst-markdown-bleve
+* https://github.com/russross/blackfriday/v2
+* https://gocloud.dev/howto/blob/
