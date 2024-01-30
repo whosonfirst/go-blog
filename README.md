@@ -14,6 +14,8 @@ Those posts are then published as HTML in to /YYYY/MM/DD/POSTNAME directory tree
 
 That's it. In many ways this is just a simplified version of Jekyll, written in Go, but that's sort of the point. While it may a little bit of time to set up custom templates once that's done these tools are designed to "just work" more or less forever as-is. As such there's a bunch of stuff these tools don't do, or don't do yet, like hidden drafts or workflow processes.
 
+For a concrete example have a look at the [fixtures/blog](fixtures/blog) folder and the `test-*` targets in the [Makefile](Makefile).
+
 ## FrontMatter
 
 TBW.
