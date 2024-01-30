@@ -1,3 +1,5 @@
+// wof-md2feed generate Atom 1.0 or RSS 2.0 syndication feeds from a collection of Markdown documents read from a source gocloud.dev/blob bucket URI
+// and writing the feeds to a target gocloud.dev/blob bucket URI.
 package main
 
 import (
@@ -5,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"path/filepath"
 	"sort"
 	"sync"
@@ -195,6 +198,12 @@ func main() {
 
 	var templates_uris multi.MultiString
 	flag.Var(&templates_uris, "template-uri", "One or more valid gocloud.dev/blob bucket URIs where feed template files should be read from.")
+
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Generate Atom 1.0 or RSS 2.0 syndication feeds from a collection of Markdown documents read from a source gocloud.dev/blob bucket URI and writing the feeds to a target gocloud.dev/blob bucket URI.\n")
+		fmt.Fprintf(os.Stderr, "Usage:\n\t %s [options] uri(N) uri(N)\n", os.Args[0])
+		flag.PrintDefaults()
+	}
 
 	flag.Parse()
 

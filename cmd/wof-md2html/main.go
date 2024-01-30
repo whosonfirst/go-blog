@@ -1,4 +1,5 @@
-// wof-md2html converts a directory of Markdown files in to HTML.
+// wof-md2html converts a collection of Markdown documents read from a source gocloud.dev/blob bucket URI and converts
+// them to HTML documents writing them to a target gocloud.dev/blob bucket URI.
 package main
 
 import (
@@ -7,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -140,6 +142,12 @@ func main() {
 
 	var templates_uris multi.MultiString
 	flag.Var(&templates_uris, "template-uri", "One or more valid gocloud.dev/blob bucket URIs where HTML template files should be read from.")
+
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Converts a collection of Markdown documents read from a source gocloud.dev/blob bucket URI and converts them to HTML documents writing them to a target gocloud.dev/blob bucket URI.\n")
+		fmt.Fprintf(os.Stderr, "Usage:\n\t %s [options] uri(N) uri(N)\n", os.Args[0])
+		flag.PrintDefaults()
+	}
 
 	flag.Parse()
 

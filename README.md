@@ -6,6 +6,22 @@ There are many blogging tools. This one is ours.
 
 Documentation is incomplete at this point.
 
+## Motivation
+
+This is designed to be a very simple blogging system. Posts are written in Markdown using Jekyll-style "front matter" blocks with support for a handful of custom properties.
+
+Those posts are then published as HTML in to /YYYY/MM/DD/POSTNAME directory trees. Index-style pages, with slugs, can be generated for all the posts in reverse-chronological order as well as the authors, tags and dates associated with posts. Date indices are generated for year, year-month and year-month-day combinations. Additionally, Atom 1.0 and/or RSS 2.0 syndication feeds can be generated for the most recent posts.
+
+That's it. In many ways this is just a simplified version of Jekyll, written in Go, but that's sort of the point. While it may a little bit of time to set up custom templates once that's done these tools are designed to "just work" more or less forever as-is. As such there's a bunch of stuff these tools don't do, or don't do yet, like hidden drafts or workflow processes.
+
+## FrontMatter
+
+TBW.
+
+## Templates
+
+TBW.
+
 ## Tools
 
 ```
@@ -57,6 +73,42 @@ tags: [collection shoebox]
 ---
 ```
 
+### wof-md2html
+
+Converts a collection of Markdown documents read from a source gocloud.dev/blob bucket URI and converts them to HTML documents writing them to a target gocloud.dev/blob bucket URI.
+
+```
+$> ./bin/wof-md2html -h
+Converts a collection of Markdown documents read from a source gocloud.dev/blob bucket URI and converts them to HTML documents writing them to a target gocloud.dev/blob bucket URI.
+Usage:
+	 ./bin/wof-md2html [options] uri(N) uri(N)
+  -footer string
+    	The name of the (Go) template to use as a custom footer
+  -header string
+    	The name of the (Go) template to use as a custom header
+  -html-bucket-uri string
+    	A valid gocloud.dev/blob bucket URI where HTML files should be written to.
+  -input string
+    	What you expect the input Markdown file to be called (default "index.md")
+  -markdown-bucket-uri string
+    	A valid gocloud.dev/blob bucket URI where Markdown files should be read from.
+  -mode string
+    	Valid modes are: files, directory (default "files")
+  -output string
+    	What you expect the output HTML file to be called (default "index.html")
+  -template-uri value
+    	One or more valid gocloud.dev/blob bucket URIs where HTML template files should be read from.
+```
+
+For example:
+
+```
+$> ./bin/wof-md2html \
+	-markdown-bucket-uri file:///usr/local/sfomuseum/www-sfomuseum-weblog/www/ \
+	-html-bucket-uri file:///usr/local/sfomuseum/www-sfomuseum-weblog/www/ \
+	blog/2024/01/22/shoebox/index.md
+```
+
 ### wof-md2idx
 
 Generate paginated "index"-style list pages for a collection of blog posts. List styles include authors, tags, dates and reverse-chronological posts.
@@ -91,13 +143,29 @@ Usage of ./bin/wof-md2idx:
     	The name of the (Go) template to use as a custom rollup view (for things like tags and authors)
 ```
 
-For example:
+### wof-md2feed
+
+Generate Atom 1.0 or RSS 2.0 syndication feeds from a collection of Markdown documents read from a source gocloud.dev/blob bucket URI and writing the feeds to a target gocloud.dev/blob bucket URI.
 
 ```
-$> ./bin/wof-md2html \
-	-markdown-bucket-uri file:///usr/local/sfomuseum/www-sfomuseum-weblog/www/ \
-	-html-bucket-uri file:///usr/local/sfomuseum/www-sfomuseum-weblog/www/ \
-	blog/2024/01/22/shoebox/index.md
+$> ./bin/wof-md2feed -h
+Generate Atom 1.0 or RSS 2.0 syndication feeds from a collection of Markdown documents read from a source gocloud.dev/blob bucket URI and writing the feeds to a target gocloud.dev/blob bucket URI.
+Usage:
+	 ./bin/wof-md2feed [options] uri(N) uri(N)
+  -feeds-bucket-uri string
+    	A valid gocloud.dev/blob bucket URI where feeds should be written to.
+  -format string
+    	Valid options are: atom_10, rss_20 (default "rss_20")
+  -input string
+    	What you expect the input Markdown file to be called (default "index.md")
+  -items int
+    	The number of items to include in your feed (default 10)
+  -markdown-bucket-uri string
+    	A valid gocloud.dev/blob bucket URI where Markdown files should be read from.
+  -output string
+    	The filename of your feed. If empty default to the value of -format + ".xml"
+  -template-uri value
+    	One or more valid gocloud.dev/blob bucket URIs where feed template files should be read from.
 ```
 
 ## Putting it all together
@@ -108,7 +176,7 @@ Here are some _example_ Makefile targets for a weblog where copies the binary to
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 BIN=utils/$(OS)
 
-# https://github.com/whosonfirst/go-whosonfirst-markdown
+# https://github.com/whosonfirst/go-blog
 MD2HTML=$(BIN)/wof-md2html
 MD2IDX=$(BIN)/wof-md2idx
 MD2FEED=$(BIN)/wof-md2feed
