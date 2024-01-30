@@ -1,3 +1,4 @@
+// wof-mdparse parses one or more whosonfirst/go-blog -style Markdown URIs and output FrontMatter, body text or both.
 package main
 
 import (
@@ -5,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/aaronland/gocloud-blob/bucket"
 	"github.com/whosonfirst/go-blog/parser"
@@ -18,7 +20,13 @@ func main() {
 	var body = flag.Bool("body", false, "Dump (Markdown) body")
 	var all = flag.Bool("all", false, "Dump both frontmatter and body")
 
-	var md_bucket_uri = flag.String("markdown-bucket-uri", "cwd://", "...")
+	var md_bucket_uri = flag.String("markdown-bucket-uri", "", "A valid gocloud.dev/blob bucket URI where Markdown files should be read from.")
+
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Parse one or more whosonfirst/go-blog -style Markdown URIs and output FrontMatter, body text or both.\n")
+		fmt.Fprintf(os.Stderr, "Usage:\n\t %s [options] uri(N) uri(N)\n", os.Args[0])
+		flag.PrintDefaults()
+	}
 
 	flag.Parse()
 

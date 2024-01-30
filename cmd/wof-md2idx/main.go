@@ -1,3 +1,5 @@
+// wof-md2idx will generate paginated "index"-style list pages for a collection of blog posts. List styles include authors,
+// tags, dates and reverse-chronological posts.
 package main
 
 import (
@@ -10,6 +12,7 @@ import (
 	"io/ioutil"
 	"log"
 	"math"
+	"os"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -610,18 +613,24 @@ func main() {
 	var footer = flag.String("footer", "", "The name of the (Go) template to use as a custom footer")
 	var list = flag.String("list", "", "The name of the (Go) template to use as a custom list view")
 	var rollup = flag.String("rollup", "", "The name of the (Go) template to use as a custom rollup view (for things like tags and authors)")
-	var mode = flag.String("mode", "landing", "...")
+	var mode = flag.String("mode", "landing", "Valid modes are: authors, landing, tags, ymd.")
 
 	var html_templates_uris multi.MultiString
-	flag.Var(&html_templates_uris, "html-template-uri", "...")
+	flag.Var(&html_templates_uris, "html-template-uri", "One or more valid gocloud.dev/blob bucket URIs where HTML template files should be read from.")
 
 	var md_templates_uris multi.MultiString
-	flag.Var(&md_templates_uris, "markdown-template-uri", "...")
+	flag.Var(&md_templates_uris, "markdown-template-uri", "One or more valid gocloud.dev/blob bucket URIs where Markdown template files should be read from.")
 
-	var html_bucket_uri = flag.String("html-bucket-uri", "cwd://", "...")
-	var md_bucket_uri = flag.String("markdown-bucket-uri", "cwd://", "...")
+	var html_bucket_uri = flag.String("html-bucket-uri", "", "A valid gocloud.dev/blob bucket URI where HTML files should be written to.")
+	var md_bucket_uri = flag.String("markdown-bucket-uri", "", "A valid gocloud.dev/blob bucket URI where Markdown files should be read from.")
 
 	var per_page = flag.Int("per-page", 10, "The number of posts to include on a single page (the rest will be paginated on to page2, page3 and so on.")
+
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Generate paginated \"index\"-style list pages for a collection of blog posts. List styles include authors, tags, dates and reverse-chronological posts.\n")
+		fmt.Fprintf(os.Stderr, "Usage:\n\t %s [options] uri(N) uri(N)\n", os.Args[0])
+		flag.PrintDefaults()
+	}
 
 	flag.Parse()
 

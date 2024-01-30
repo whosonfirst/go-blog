@@ -190,11 +190,11 @@ func main() {
 	var format = flag.String("format", "rss_20", "Valid options are: atom_10, rss_20")
 	var items = flag.Int("items", 10, "The number of items to include in your feed")
 
-	var feeds_bucket_uri = flag.String("feeds-bucket-uri", "cwd://", "...")
-	var md_bucket_uri = flag.String("markdown-bucket-uri", "cwd://", "...")
+	var feeds_bucket_uri = flag.String("feeds-bucket-uri", "", "A valid gocloud.dev/blob bucket URI where feeds should be written to.")
+	var md_bucket_uri = flag.String("markdown-bucket-uri", "", "A valid gocloud.dev/blob bucket URI where Markdown files should be read from.")
 
 	var templates_uris multi.MultiString
-	flag.Var(&templates_uris, "template-uri", "...")
+	flag.Var(&templates_uris, "template-uri", "One or more valid gocloud.dev/blob bucket URIs where feed template files should be read from.")
 
 	flag.Parse()
 

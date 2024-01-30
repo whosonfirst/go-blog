@@ -135,11 +135,11 @@ func main() {
 	var header = flag.String("header", "", "The name of the (Go) template to use as a custom header")
 	var footer = flag.String("footer", "", "The name of the (Go) template to use as a custom footer")
 
-	var templates_uris multi.MultiString
-	flag.Var(&templates_uris, "template-uri", "...")
+	var html_bucket_uri = flag.String("html-bucket-uri", "", "A valid gocloud.dev/blob bucket URI where HTML files should be written to.")
+	var md_bucket_uri = flag.String("markdown-bucket-uri", "", "A valid gocloud.dev/blob bucket URI where Markdown files should be read from.")
 
-	var html_bucket_uri = flag.String("html-bucket-uri", "cwd://", "...")
-	var md_bucket_uri = flag.String("markdown-bucket-uri", "cwd://", "...")
+	var templates_uris multi.MultiString
+	flag.Var(&templates_uris, "template-uri", "One or more valid gocloud.dev/blob bucket URIs where HTML template files should be read from.")
 
 	flag.Parse()
 
