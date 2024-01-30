@@ -1,0 +1,22 @@
+{{ define "feed_atom_10" }}<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:h="http://www.w3.org/1999/xhtml">
+  <id>http://localhost:8080/blog/</id>
+  <title>This is a test weblog</title>
+  <link href="http://localhost:8080/blog/" rel="alternate" title="Test weblog" type="text/html"/>
+  <link href="http://localhost:8080/blog/atom.xml" rel="self" title="Test weblog" type="application/atom+xml"/>
+  <updated>{{ .BuildDate.Format "2006-01-02T15:04:05Z07:00" }}</updated>
+  <author>
+    <name>Test</name>
+  </author>
+  <subtitle type="text"></subtitle>
+    {{ range $fm := .Posts }}
+  <entry>
+    <link type="text/html" href="http://localhost:8080{{ $fm.Permalink }}" rel="alternate"/>
+    <title>{{ $fm.Title }}</title>
+    <id>http://localhost:8080{{ $fm.Permalink }}</id>
+    <published>{{ $fm.Date.Format "2006-01-02" }}</published>
+    <updated>{{ $fm.Date.Format "2006-01-02" }}</updated>
+    <content type="text">{{ $fm.Excerpt }}</content>
+  </entry>
+  {{ end }}
+</feed>{{ end }}

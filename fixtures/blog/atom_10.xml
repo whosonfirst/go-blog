@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:h="http://www.w3.org/1999/xhtml">
+  <id>http://localhost:8080/blog/</id>
+  <title>This is a test weblog</title>
+  <link href="http://localhost:8080/blog/" rel="alternate" title="Test weblog" type="text/html"/>
+  <link href="http://localhost:8080/blog/atom.xml" rel="self" title="Test weblog" type="application/atom+xml"/>
+  <updated>2024-01-29T17:56:34-08:00</updated>
+  <author>
+    <name>Test</name>
+  </author>
+  <subtitle type="text"></subtitle>
+    
+  <entry>
+    <link type="text/html" href="http://localhost:8080/blog/2024/01/28/test/" rel="alternate"/>
+    <title>This is a test</title>
+    <id>http://localhost:8080/blog/2024/01/28/test/</id>
+    <published>2024-01-28</published>
+    <updated>2024-01-28</updated>
+    <content type="text">This test left intentionally blank</content>
+  </entry>
+  
+</feed>

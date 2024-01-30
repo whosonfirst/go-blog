@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:h="http://www.w3.org/1999/xhtml" version="2.0">
+  <channel>
+    <title>This is a test weblog.</title>
+    <link>http://localhost:8080/blog/</link>
+    <lastBuildDate>Mon, 29 Jan 2024 17:56:34 PST</lastBuildDate>
+    <description>This is a test weblog.</description>
+    
+    <item>
+      <link>http://localhost:8080/blog/2024/01/28/test/</link>
+      <title>This is a test</title>
+      <description>This test left intentionally blank</description>
+    </item>
+    
+  </channel>
+</rss>
