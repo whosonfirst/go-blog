@@ -1,0 +1,42 @@
+{{ define "header" -}}
+<!DOCTYPE html>
+<html>
+    <head>
+	
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta name="MobileOptimized" content="width">
+	<meta name="HandheldFriendly" content="true">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Example</title>
+
+	{{ if and .FrontMatter.Title .FrontMatter.Excerpt .FrontMatter.Permalink }}
+		<meta property="og:type" content="article" />
+		<meta property="og:site_name" content="Mills Field, a SFO Museum website" />
+		<meta property="og:title" content="{{ .FrontMatter.Title }}" />
+		<meta property="og:description" content="{{ .FrontMatter.Excerpt }}" />
+		{{ if .FrontMatter.Image }}
+		<meta property="og:image" content="https://millsfield.sfomuseum.org{{ .FrontMatter.Permalink }}{{ .FrontMatter.Image }}" />
+		{{ end }}
+		
+		<meta property="twitter:card" value="summary" />
+		<meta property="twitter:site" content="@sfomuseum" />
+		<meta property="twitter:creator" content="@sfomuseum" />
+		<meta property="twitter:url" content="https://millsfield.sfomuseum.org{{ .FrontMatter.Permalink }}" />
+		<meta property="twitter:title" content="{{ .FrontMatter.Title }}" />
+		<meta property="twitter:description" content="{{ .FrontMatter.Excerpt }}" />
+
+		{{ if .FrontMatter.Image }}
+		<meta property="twitter:image" content="https://millsfield.sfomuseum.org{{ .FrontMatter.Permalink }}{{ .FrontMatter.Image }}" />
+		{{ end }}
+		{{ end }}
+		
+    </head>
+
+    <body>
+
+	<header>This is the header</header>
+	<article>
+	    
+{{end}}

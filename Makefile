@@ -30,6 +30,9 @@ test-posts:
 		-mode directory \
 		-html-bucket-uri cwd:///fixtures/ \
 		-markdown-bucket-uri cwd:///fixtures/ \
+		-template-uri cwd:///fixtures/templates/blog \
+		-header header \
+		-footer footer \
 		blog/
 
 test-indices:
@@ -43,6 +46,11 @@ test-indices-tags:
 		-mode tags \
 		-html-bucket-uri cwd:///fixtures/ \
 		-markdown-bucket-uri cwd:///fixtures/ \
+		-html-template-uri cwd:///fixtures/templates/blog \
+		-header header \
+		-footer footer \
+		-list list \
+		-rollup rollup \
 		blog/
 
 test-indices-authors:
@@ -50,6 +58,11 @@ test-indices-authors:
 		-mode authors \
 		-html-bucket-uri cwd:///fixtures/ \
 		-markdown-bucket-uri cwd:///fixtures/ \
+		-html-template-uri cwd:///fixtures/templates/blog \
+		-header header \
+		-footer footer \
+		-list list \
+		-rollup rollup \
 		blog/
 
 test-indices-ymd:
@@ -57,6 +70,11 @@ test-indices-ymd:
 		-mode ymd \
 		-html-bucket-uri cwd:///fixtures/ \
 		-markdown-bucket-uri cwd:///fixtures/ \
+		-html-template-uri cwd:///fixtures/templates/blog \
+		-header header \
+		-footer footer \
+		-list list \
+		-rollup rollup \
 		blog/
 
 test-indices-landing:
@@ -64,6 +82,11 @@ test-indices-landing:
 		-mode landing \
 		-html-bucket-uri cwd:///fixtures/ \
 		-markdown-bucket-uri cwd:///fixtures/ \
+		-html-template-uri cwd:///fixtures/templates/blog \
+		-header header \
+		-footer footer \
+		-list list \
+		-rollup rollup \
 		blog/
 
 test-feeds:

@@ -1,14 +1,10 @@
 # go-blog
 
-There are many blogging tools. This one is ours.
-
-## Documentation
-
-Documentation is incomplete at this point.
+There are many "static-site" blogging tools. This one is ours.
 
 ## Motivation
 
-This is designed to be a very simple blogging system. Posts are written in Markdown using Jekyll-style "front matter" blocks with support for a handful of custom properties.
+This is designed to be a very simple blogging system and static-site generators. Posts are written in Markdown using Jekyll-style "front matter" blocks with support for a handful of custom properties.
 
 Those posts are then published as HTML in to /YYYY/MM/DD/POSTNAME directory trees. Index-style pages, with slugs, can be generated for all the posts in reverse-chronological order as well as the authors, tags and dates associated with posts. Date indices are generated for year, year-month and year-month-day combinations. Additionally, Atom 1.0 and/or RSS 2.0 syndication feeds can be generated for the most recent posts.
 
@@ -18,15 +14,70 @@ For a concrete example have a look at the [fixtures/blog](fixtures/blog) folder 
 
 ## FrontMatter
 
-TBW.
+Posts should start with a Jekyll-style "frontmatter" block with the following keys (and values updated to reflect the post being written):
+
+```
+---
+layout: page
+permalink: /blog/2024/01/28/test/
+published: true
+title: This is a test
+date: 2024-01-28
+category: blog
+excerpt: "This test left intentionally blank"
+authors: [author1,author2]
+image: images/test.jpg
+tags: [tag1,tag2,tag3]
+---
+```
 
 ## Templates
 
-TBW.
+### wof-md2html
+
+The `wof-md2html` does not require any user-defined templates but it does support custom "header" and "footer" templates to wrap the output of any given post.
+
+Examples:
+
+* [fixtures/templates/blog/header.html](fixtures/templates/blog/header.html)
+* [fixtures/templates/blog/footer.html](fixtures/templates/blog/footer.html)
+
+### wof-md2idx
+
+The `wof-md2idx` does not require any user-defined templates but it does support custom "header" and "footer" templates to wrap the output of any given index, as well a "list" template for list views and a "rollup" template for rollup views (for example, all the tags or all the authors)..
+
+Examples:
+
+* [fixtures/templates/blog/header.html](fixtures/templates/blog/header.html)
+* [fixtures/templates/blog/footer.html](fixtures/templates/blog/footer.html)
+* [fixtures/templates/blog/list.html](fixtures/templates/blog/list.html)
+* [fixtures/templates/blog/rollup.html](fixtures/templates/blog/rollup.html)
+
+### wof-md2feed
+
+If you are going to use the `wof-md2feed` tool you will need to ensure that templates with the following names are loaded:
+
+#### feed_atom_10
+
+A Go language template defining an Atom 1.0 syndication feed.
+
+Example: [fixtures/templates/feeds/atom_10.xml](fixtures/templates/feeds/atom_10.xml)
+
+#### feeds_rss_20
+
+A Go language template defining an RSS 2.0 syndication feed.
+
+Example: [fixtures/templates/feeds/rss_20.xml](fixtures/templates/feeds/rss_20.xml)
 
 ## "Buckets"
 
-TBW.
+Under the hood the code uses the [GoCloud `Blob` abstraction layer](https://gocloud.dev/howto/blob/) for reading and writing files. These include source Markdown files, HTML files that are generated and any (Go language) template files used to supplement or decorate the default HTML output.
+
+As of this writing only the [file://](https://gocloud.dev/howto/blob/#local) protocol handler is supported by default in addition to the non-standard helper protocol `cwd://` which will attempt to derive a `file://` URI for the current working directory.
+
+For example, if you were in a directory called `/usr/local/weblog` then the URI `cwd://` would be interpreted as `file:///usr/local/weblog`.
+
+In future releases other `Blob` providers, notably S3, will be supported.
 
 ## Tools
 
@@ -177,6 +228,8 @@ Usage:
 ## Putting it all together
 
 Here are some _example_ Makefile targets for a weblog where copies the binary tools produced by this package are stored in a folder called `dist`, templates for the blog are stored in `templates` and the Markdown files and resultant HTML files are stored in `www/blog`. Note that these targets do not do anything to publish or sync the rendered Markdown files to a remote server or location. Those details are left to you to figure out for yourself.
+
+_For a working example consult the `test*` targets in the [Makefile](Makefile)._
 
 ```
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
