@@ -14,8 +14,8 @@ import (
 	"time"
 
 	"github.com/djherbis/times"
-	"github.com/whosonfirst/go-blog"
 	"github.com/whosonfirst/go-blog/jekyll"
+	"github.com/whosonfirst/go-blog/markdown"
 )
 
 type ParseOptions struct {

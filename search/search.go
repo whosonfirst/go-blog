@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/russross/blackfriday/v2"
-	"github.com/whosonfirst/go-blog"
+	"github.com/whosonfirst/go-blog/markdown"
 )
 
 type Indexer interface {

@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/aaronland/gocloud-blob/walk"
-	"github.com/whosonfirst/go-blog"
+	"github.com/whosonfirst/go-blog/markdown"
 	"github.com/whosonfirst/go-blog/parser"
 	"github.com/whosonfirst/go-blog/render"
 	"gocloud.dev/blob"
