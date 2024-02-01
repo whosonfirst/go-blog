@@ -20,6 +20,9 @@ func RunWithFlagSet(ctx context.Context, fs *flag.FlagSet, logger *slog.Logger) 
 
 	flagset.Parse(fs)
 
+	logger = logger.With("cmd", "md2parse")
+	slog.SetDefault(logger)
+
 	md_bucket, err := bucket.OpenBucket(ctx, md_bucket_uri)
 
 	if err != nil {
@@ -37,7 +40,7 @@ func RunWithFlagSet(ctx context.Context, fs *flag.FlagSet, logger *slog.Logger) 
 	opts.FrontMatter = frontmatter
 	opts.Body = body
 
-	for _, uri := range flag.Args() {
+	for _, uri := range fs.Args() {
 
 		r, err := md_bucket.NewReader(ctx, uri, nil)
 

@@ -21,6 +21,9 @@ func RunWithFlagSet(ctx context.Context, fs *flag.FlagSet, logger *slog.Logger) 
 
 	flagset.Parse(fs)
 
+	logger = logger.With("cmd", "md2feed")
+	slog.SetDefault(logger)
+
 	t, err := templates.LoadFeedTemplates(ctx, templates_uris...)
 
 	if err != nil {
@@ -54,7 +57,7 @@ func RunWithFlagSet(ctx context.Context, fs *flag.FlagSet, logger *slog.Logger) 
 	opts.SourceBucket = md_bucket
 	opts.TargetBucket = feeds_bucket
 
-	for _, uri := range flag.Args() {
+	for _, uri := range fs.Args() {
 
 		err := RenderDirectory(ctx, opts, uri)
 

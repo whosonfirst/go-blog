@@ -21,6 +21,9 @@ func RunWithFlagSet(ctx context.Context, fs *flag.FlagSet, logger *slog.Logger) 
 
 	flagset.Parse(fs)
 
+	logger = logger.With("cmd", "md2idx")
+	slog.SetDefault(logger)
+
 	md_bucket, err := bucket.OpenBucket(ctx, md_bucket_uri)
 
 	if err != nil {
@@ -64,7 +67,7 @@ func RunWithFlagSet(ctx context.Context, fs *flag.FlagSet, logger *slog.Logger) 
 		Mode:              mode,
 	}
 
-	for _, uri := range flag.Args() {
+	for _, uri := range fs.Args() {
 
 		err := RenderDirectory(ctx, html_opts, md_opts, uri)
 

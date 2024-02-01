@@ -21,12 +21,17 @@ dist-os:
 	GOOS=$(OS) GOARCH=386 go build -mod $(GOMOD) -ldflags="$(LDFLAGS)" -o dist/$(OS)/wof-md2idx cmd/wof-md2idx/main.go
 
 test:
+	@make test-prune
 	@make test-posts
 	@make test-indices
 	@make test-feeds
 
+test-prune:
+	find fixtures/blog -type f -name '*.html' | xargs rm
+	find fixtures/blog -type d -empty -delete
+
 test-posts:
-	bin/wof-md2html \
+	go run -mod $(GOMOD) cmd/wof-md2html/main.go \
 		-mode directory \
 		-html-bucket-uri cwd:///fixtures/ \
 		-markdown-bucket-uri cwd:///fixtures/ \
@@ -42,7 +47,7 @@ test-indices:
 	@make test-indices-landing
 
 test-indices-tags:
-	bin/wof-md2idx \
+	go run -mod $(GOMOD) cmd/wof-md2idx/main.go \
 		-mode tags \
 		-html-bucket-uri cwd:///fixtures/ \
 		-markdown-bucket-uri cwd:///fixtures/ \
@@ -54,7 +59,7 @@ test-indices-tags:
 		blog/
 
 test-indices-authors:
-	bin/wof-md2idx \
+	go run -mod $(GOMOD) cmd/wof-md2idx/main.go \
 		-mode authors \
 		-html-bucket-uri cwd:///fixtures/ \
 		-markdown-bucket-uri cwd:///fixtures/ \
@@ -66,7 +71,7 @@ test-indices-authors:
 		blog/
 
 test-indices-ymd:
-	bin/wof-md2idx \
+	go run -mod $(GOMOD) cmd/wof-md2idx/main.go \
 		-mode ymd \
 		-html-bucket-uri cwd:///fixtures/ \
 		-markdown-bucket-uri cwd:///fixtures/ \
@@ -78,7 +83,7 @@ test-indices-ymd:
 		blog/
 
 test-indices-landing:
-	bin/wof-md2idx \
+	go run -mod $(GOMOD) cmd/wof-md2idx/main.go \
 		-mode landing \
 		-html-bucket-uri cwd:///fixtures/ \
 		-markdown-bucket-uri cwd:///fixtures/ \
@@ -94,7 +99,7 @@ test-feeds:
 	@make test-feeds-rss
 
 test-feeds-atom:
-	bin/wof-md2feed \
+	go run -mod $(GOMOD) cmd/wof-md2feed/main.go \
 		-format atom_10 \
 		-feeds-bucket-uri cwd:///fixtures/ \
 		-markdown-bucket-uri cwd:///fixtures/ \
@@ -102,7 +107,7 @@ test-feeds-atom:
 		blog/
 
 test-feeds-rss:
-	bin/wof-md2feed \
+	go run -mod $(GOMOD) cmd/wof-md2feed/main.go \
 		-format rss_20 \
 		-feeds-bucket-uri cwd:///fixtures/ \
 		-markdown-bucket-uri cwd:///fixtures/ \

@@ -4,7 +4,7 @@
   <title>This is a test weblog</title>
   <link href="http://localhost:8080/blog/" rel="alternate" title="Test weblog" type="text/html"/>
   <link href="http://localhost:8080/blog/atom.xml" rel="self" title="Test weblog" type="application/atom+xml"/>
-  <updated>2024-01-31T15:14:34-08:00</updated>
+  <updated>2024-02-01T10:07:52-08:00</updated>
   <author>
     <name>Test</name>
   </author>

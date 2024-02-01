@@ -21,6 +21,9 @@ func RunWithFlagSet(ctx context.Context, fs *flag.FlagSet, logger *slog.Logger) 
 
 	flagset.Parse(fs)
 
+	logger = logger.With("cmd", "md2html")
+	slog.SetDefault(logger)
+
 	t, err := templates.LoadHTMLTemplates(ctx, templates_uris...)
 
 	if err != nil {
@@ -53,7 +56,7 @@ func RunWithFlagSet(ctx context.Context, fs *flag.FlagSet, logger *slog.Logger) 
 	opts.SourceBucket = md_bucket
 	opts.TargetBucket = html_bucket
 
-	for _, path := range flag.Args() {
+	for _, path := range fs.Args() {
 
 		err := Render(ctx, path, opts)
 
