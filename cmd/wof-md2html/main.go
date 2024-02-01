@@ -19,7 +19,7 @@ func main() {
 	err := md2html.Run(ctx, logger)
 
 	if err != nil {
-		logger.Error("Failed to run mdparse", "error", err)
+		logger.Error("Failed to run md2html", "error", err)
 		os.Exit(0)
 	}
 }
