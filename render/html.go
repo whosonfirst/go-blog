@@ -7,8 +7,8 @@ import (
 	"log"
 
 	"github.com/russross/blackfriday/v2"
-	"github.com/whosonfirst/go-blog"
 	"github.com/whosonfirst/go-blog/jekyll"
+	"github.com/whosonfirst/go-blog/markdown"
 	"gocloud.dev/blob"
 )
 

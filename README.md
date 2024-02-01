@@ -79,6 +79,34 @@ For example, if you were in a directory called `/usr/local/weblog` then the URI 
 
 In future releases other `Blob` providers, notably S3, will be supported.
 
+If you want to add your own custom `Blob` providers you will need to clone the relevant tool in `cmd` and add the necessary `import` statements. For example, to enable support for the [GoCloud S3 provider](https://gocloud.dev/howto/blob/#s3) to the [cmd/wof-mdparse](cmd/wof-mdparse/main.go) tool you might do something like this:
+
+```
+package main
+
+import (
+	"context"
+	"log/slog"
+	"os"
+
+	"github.com/whosonfirst/go-blog/app/mdparse"
+	_ "gocloud.dev/blob/fileblob"
+	
+	// This is the only change
+	_ "gocloud.dev/blob/s3blob"	
+)
+
+func main() {
+	ctx := context.Background()
+	logger := slog.Default()
+	mdparse.Run(ctx, logger)
+}
+```
+
+The "guts" of each tool have been moved in to discrete packages in the `app` folder to make it easier to apply these kinds of changes.
+
+_Error handling omitted for the sake of brevity._
+
 ## Tools
 
 ```
