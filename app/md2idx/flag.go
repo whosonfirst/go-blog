@@ -27,7 +27,7 @@ var md_templates_uris multi.MultiString
 
 func DefaultFlagSet() *flag.FlagSet {
 
-	fs := flagset.NewFlagSet("md2html")
+	fs := flagset.NewFlagSet("md2idx")
 
 	fs.StringVar(&input, "input", "index.md", "What you expect the input Markdown file to be called")
 	fs.StringVar(&output, "output", "index.html", "What you expect the output HTML file to be called")
@@ -47,7 +47,6 @@ func DefaultFlagSet() *flag.FlagSet {
 
 	fs.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Generate paginated \"index\"-style list pages for a collection of blog posts. List styles include authors, tags, dates and reverse-chronological posts.\n")
-		fmt.Fprintf(os.Stderr, "Parse one or more whosonfirst/go-blog -style Markdown URIs and output FrontMatter, body text or both.\n")
 		fmt.Fprintf(os.Stderr, "Usage:\n\t %s [options] uri(N) uri(N)\n", os.Args[0])
 		flag.PrintDefaults()
 	}
