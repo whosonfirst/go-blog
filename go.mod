@@ -7,8 +7,8 @@ require (
 	github.com/djherbis/times v1.6.0
 	github.com/russross/blackfriday/v2 v2.1.0
 	github.com/sfomuseum/go-flags v0.10.0
-	gocloud.dev v0.39.0
-	golang.org/x/text v0.18.0
+	gocloud.dev v0.40.0
+	golang.org/x/text v0.20.0
 )
 
 require (
