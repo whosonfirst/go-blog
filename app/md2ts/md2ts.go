@@ -1,11 +1,22 @@
 package md2ts
 
+/*
+
+$> go run cmd/wof-md2ts/main.go \
+	-markdown-bucket-uri file:///usr/local/sfomuseum/www-sfomuseum-weblog/www/blog \
+	-url-prefix http://millsfield.sfomuseum.org \
+	> work/index.json
+
+$> cd work
+$> tinysearch index.json
+$> fileserver -root ./wasm_output
+
+*/
+
 import (
 	"context"
-	"encoding/json"
 	"flag"
 	"fmt"
-	"log/slog"
 	"os"
 
 	"github.com/aaronland/gocloud-blob/bucket"
@@ -23,9 +34,6 @@ func RunWithFlagSet(ctx context.Context, fs *flag.FlagSet) error {
 
 	flagset.Parse(fs)
 
-	logger := slog.Default()
-	logger = logger.With("cmd", "md2idx")
-
 	md_bucket, err := bucket.OpenBucket(ctx, md_bucket_uri)
 
 	if err != nil {
@@ -34,29 +42,19 @@ func RunWithFlagSet(ctx context.Context, fs *flag.FlagSet) error {
 
 	defer md_bucket.Close()
 
-	index := make([]*tinysearch.Record, 0)
+	posts_iter := posts.Iterate(ctx, md_bucket)
+	wr := os.Stdout
 
-	for p, err := range posts.Iterate(ctx, md_bucket) {
-
-		if err != nil {
-			slog.Error("Failed to iterate", "error", err)
-			break
-		}
-
-		r := &tinysearch.Record{
-			Title: p.FrontMatter.Title,
-			URL:   p.FrontMatter.Permalink,
-			Body:  p.Body.String(),
-		}
-
-		index = append(index, r)
+	index_opts := &tinysearch.IndexPostsOptions{
+		Iterator: posts_iter,
+		Writer:   wr,
+		URLPrefix: url_prefix,
 	}
 
-	enc := json.NewEncoder(os.Stdout)
-	err = enc.Encode(index)
+	err = tinysearch.IndexPosts(ctx, index_opts)
 
 	if err != nil {
-		return fmt.Errorf("Failed to encode index, %w", err)
+		return fmt.Errorf("Failed to index posts, %w", err)
 	}
 
 	return nil

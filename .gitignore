@@ -6,3 +6,5 @@ src
 bin/wof-*
 *.db
 dist
+work
+go.work*
