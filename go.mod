@@ -3,12 +3,12 @@ module github.com/whosonfirst/go-blog
 go 1.23
 
 require (
-	github.com/aaronland/gocloud-blob v0.3.1
+	github.com/aaronland/gocloud-blob v0.4.0
 	github.com/djherbis/times v1.6.0
 	github.com/russross/blackfriday/v2 v2.1.0
 	github.com/sfomuseum/go-flags v0.10.0
 	gocloud.dev v0.40.0
-	golang.org/x/text v0.20.0
+	golang.org/x/text v0.21.0
 )
 
 require (

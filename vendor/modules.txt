@@ -1,5 +1,5 @@
-# github.com/aaronland/gocloud-blob v0.3.1
-## explicit; go 1.22.2
+# github.com/aaronland/gocloud-blob v0.4.0
+## explicit; go 1.23
 github.com/aaronland/gocloud-blob/bucket
 github.com/aaronland/gocloud-blob/walk
 # github.com/djherbis/times v1.6.0
@@ -65,7 +65,7 @@ golang.org/x/net/trace
 ## explicit; go 1.18
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/text v0.20.0
+# golang.org/x/text v0.21.0
 ## explicit; go 1.18
 golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
