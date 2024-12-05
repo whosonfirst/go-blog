@@ -7,6 +7,7 @@ cli:
 	go build -mod $(GOMOD) -ldflags="$(LDFLAGS)" -o bin/wof-md2feed cmd/wof-md2feed/main.go	
 	go build -mod $(GOMOD) -ldflags="$(LDFLAGS)" -o bin/wof-md2html cmd/wof-md2html/main.go
 	go build -mod $(GOMOD) -ldflags="$(LDFLAGS)" -o bin/wof-md2idx cmd/wof-md2idx/main.go
+	go build -mod $(GOMOD) -ldflags="$(LDFLAGS)" -o bin/wof-md2ts cmd/wof-md2ts/main.go
 
 dist-build:
 	# OS=darwin make dist-os

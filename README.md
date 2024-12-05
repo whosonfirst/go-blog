@@ -116,6 +116,7 @@ go build -mod vendor -ldflags="-s -w" -o bin/wof-mdparse cmd/wof-mdparse/main.go
 go build -mod vendor -ldflags="-s -w" -o bin/wof-md2feed cmd/wof-md2feed/main.go	
 go build -mod vendor -ldflags="-s -w" -o bin/wof-md2html cmd/wof-md2html/main.go
 go build -mod vendor -ldflags="-s -w" -o bin/wof-md2idx cmd/wof-md2idx/main.go
+go build -mod vendor -ldflags="-s -w" -o bin/wof-md2ts cmd/wof-md2ts/main.go
 ```
 
 ### wof-mdparse
@@ -252,6 +253,19 @@ Usage:
   -template-uri value
     	One or more valid gocloud.dev/blob bucket URIs where feed template files should be read from.
 ```
+
+### wof-md2ts
+
+Generate a [tinysearch](https://github.com/tinysearch/tinysearch) compatible JSON file of blog posts used to generate a tinysearch index.
+
+```
+$> ./bin/wof-md2ts -h
+Generate a tinysearch compatible JSON file of blog posts used to generate a tinysearch index.
+Usage:
+	 ./bin/wof-md2ts [options] uri(N) uri(N)
+```
+
+Note: This does _not_ build the actualy [tinysearch](https://github.com/tinysearch/tinysearch) search index (WASM binary). It just builds the input data used to build the index. Consult the [tinysearch](https://github.com/tinysearch/tinysearch) documentation for details.
 
 ## Putting it all together
 
